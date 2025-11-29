@@ -20,7 +20,7 @@ def lambda_handler(event, context):
     # defaults to Edinburgh Castle
     latitude = float(os.environ.get("LOCATION_LAT", "55.9486"))
     longitude = float(os.environ.get("LOCATION_LON", "-3.1999"))
-    timezone = os.environ.get("TIMEZONE", "GMT")
+    timezone = os.environ.get("TIMEZONE", "Europe/London")
     forecast_days = int(os.environ.get("FORECAST_DAYS", "1"))
     location_name = os.environ.get("LOCATION_NAME", "Edinburgh")
 

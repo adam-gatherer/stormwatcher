@@ -13,7 +13,7 @@ Stormwatch uses environment variables so the project can be redeployed to differ
 | `WEATHER_API_BASE_URL` | Base URL for weather API | `https://api.open-meteo.com/v1/forecast` |
 | `LOCATION_LAT` | Latitude of target location | `55.9486` *(Edinburgh Castle)* |
 | `LOCATION_LON` | Longitude of target location | `-3.1999` *(Edinburgh Castle)* |
-| `TIMEZONE` | Timezone string for API results | `GMT` |
+| `TIMEZONE` | Timezone string for API results | `Europe/London` |
 | `FORECAST_DAYS`      | Number of days of forecast to fetch | `1`
 | `LOCATION_NAME`      | Human-readable name for the location. This is written into the S3 payload as `location` and becomes the DynamoDB partition key (uppercased) in the transform Lambda. | `Edinburgh`                        |`
 | `RAW_BUCKET_NAME` | S3 bucket for raw JSON drops | `stormwatch-raw-json-xyz` |
@@ -79,7 +79,7 @@ WEATHER_API_BASE_URL="https://api.open-meteo.com/v1/forecast"
 LOCATION_NAME="Edinburgh"
 LOCATION_LAT="55.9486"
 LOCATION_LON="-3.1999"
-TIMEZONE="GMT"
+TIMEZONE="Europe/London"
 FORECAST_DAYS="1"
 
 RAW_BUCKET_NAME="stormwatch-raw-json-xyz"
