@@ -18,7 +18,7 @@ In AWS, these variables are assigned per-Lambda; the combined .env is only for l
 | `TIMEZONE` | Timezone string for API results | `Europe/London` |
 | `FORECAST_DAYS`      | Number of days of forecast to fetch | `1` |
 | `LOCATION_NAME`      | Human-readable name for the location. This is written into the S3 payload as `location` and becomes the DynamoDB partition key (uppercased) in the transform Lambda. | `Edinburgh`                        |
-| `RAW_BUCKET_NAME` | S3 bucket for raw JSON drops | `stormwatch-raw-json-xyz` |
+| `RAW_BUCKET_NAME` | S3 bucket for raw JSON drops | `stormwatch-raw-json-xyz123` |
 | `RAW_BUCKET_PREFIX` | Prefix for stored JSON files | `raw/` |
 
 
@@ -26,6 +26,7 @@ In AWS, these variables are assigned per-Lambda; the combined .env is only for l
 - `LOCATION_LAT` and `LOCATION_LON` define the location the forecast is pulled for.
 - `RAW_BUCKET_PREFIX` defaults to `raw/` if not provided (as per code).
 - `FORECAST_DAYS=1` means “fetch just one day of forecast data”.
+- `xyz123` is replaced by a random, 6 character long string in the terraform deployment to ensure bucket name is globally unique.
 
 
 ---
@@ -36,11 +37,12 @@ In AWS, these variables are assigned per-Lambda; the combined .env is only for l
 
 | Variable | Description | Example Value |
 |----------|-------------|------------------------------|
-| `WEATHERRISK_TABLE_NAME` | DynamoDB table for processed data | `stormwatch-risk-db-xyz` |
+| `WEATHERRISK_TABLE_NAME` | DynamoDB table for processed data | `stormwatch-risk-db-xyz123` |
 
 ### Notes
 - `WEATHERRISK_TABLE_NAME` must match the DynamoDB table created by Terraform.
 - This Lambda does *not* take a location env var. It reads the `location` field from the S3 JSON payload (written by Lambda #1) and uses `location.upper()` as the DynamoDB partition key.
+- `xyz123` is replaced by a random, 6 character long string in the terraform deployment to ensure database name is globally unique.
 
 
 ---
