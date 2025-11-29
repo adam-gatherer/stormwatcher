@@ -10,6 +10,10 @@
 ![EventBridge](https://img.shields.io/badge/Amazon%20EventBridge-FF4F8B?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![Serverless](https://img.shields.io/badge/Serverless-000000?style=for-the-badge&logo=serverless&logoColor=white)
 ----
+![Status](https://img.shields.io/badge/status-active-success)
+![Built With](https://img.shields.io/badge/built%20with-Terraform-blue)
+----
+# About
 
 A lightweight, serverless daily weather ingestion and risk-scoring pipeline built on AWS.
 At 06:00 every morning, Stormwatcher fetches a weather forecast from Open-Meteo’s API, lands the untouched JSON payload in S3, then processes it through a second Lambda to compute a daily risk score and store the result in DynamoDB for downstream consumption.
@@ -41,20 +45,12 @@ This project demonstrates practical, production-aligned AWS skills across Terraf
 
 ## **Architecture Overview**
 
-```
-EventBridge (06:00 daily)
-          │
-          ▼
- Lambda #1: fetch_weather
-          │
-          ▼
- S3 Bucket (raw JSON landing zone)
-          │  S3:ObjectCreated:* on raw/
-          ▼
- Lambda #2: transform_store
-          │
-          ▼
- DynamoDB (weather-risk table)
+```mermaid
+flowchart TD
+    EB(EventBridge\n06:00 Daily) --> FW[Lambda: fetch_weather]
+    FW --> S3[(S3 Bucket\nraw JSON)]
+    S3 -->|ObjectCreated: raw/*| TS[Lambda: transform_store]
+    TS --> DDB[(DynamoDB\nweather-risk table)]
 ```
 
 ### **Lambda #1 - fetch_weather**
