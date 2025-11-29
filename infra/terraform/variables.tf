@@ -25,3 +25,15 @@ variable "location_lon" {
   type        = string
   default     = "-3.1999"
 }
+
+variable "timezone" {
+  type        = string
+  description = "Time zone for API call"
+  default     = "Europe/London"
+}
+
+variable "forecast_days" {
+  type        = string
+  description = "Number of days to fetch weather forecast for"
+  default     = "1"
+}
