@@ -1,19 +1,14 @@
-# lambdas/fetch_weather/logic.py
+import requests, time, json
 
-import time
 from datetime import date
-import requests
 
 
-def get_weather(
-    api_url: str,
-    latitude: float,
-    longitude: float,
-    timezone: str,
-    forecast_days: int,
-    location_name: str,
-) -> dict:
-    """Fetch daily forecast data for a single location and return a structured payload."""
+def get_weather():
+
+    longitude = -3.1999
+    latitude = 55.9486
+
+    url = "https://api.open-meteo.com/v1/forecast"
 
     params = {
         "latitude": latitude,
@@ -27,12 +22,13 @@ def get_weather(
             "wind_gusts_10m_max,"
             "weathercode"
         ),
-        "timezone": timezone,
-        "forecast_days": forecast_days,
+        "timezone": "GMT",
+        "forecast_days": 1
     }
 
-    response = requests.get(api_url, params=params, timeout=10)
+    response = requests.get(url, params=params)
     response.raise_for_status()
+
     data = response.json()
 
     timestamp = int(time.time())
@@ -40,6 +36,11 @@ def get_weather(
     return {
         "date": str(date.today()),
         "unix_timestamp": timestamp,
-        "location": location_name,
-        "raw": data,
+        "location": "Edinburgh",
+        "raw": data
     }
+
+weather_data = get_weather()
+
+with open("weather.json", "w") as f:
+    json.dump(weather_data, f, indent=4)
