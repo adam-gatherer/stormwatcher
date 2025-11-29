@@ -5,7 +5,7 @@ import json
 import boto3
 
 
-from .logic import get_weather
+from logic import get_weather
 
 s3 = boto3.client("s3")
 

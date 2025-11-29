@@ -2,7 +2,9 @@
 
 import time
 from datetime import date
-import requests
+import json
+import urllib.request
+from urllib.parse import urlencode
 
 
 def get_weather(
@@ -31,9 +33,13 @@ def get_weather(
         "forecast_days": forecast_days,
     }
 
-    response = requests.get(api_url, params=params, timeout=10)
-    response.raise_for_status()
-    data = response.json()
+    # Build full URL with encoded params
+    url_with_params = f"{api_url}?{urlencode(params)}"
+
+    # Perform HTTP GET (stdlib only)
+    with urllib.request.urlopen(url_with_params, timeout=10) as resp:
+        body = resp.read().decode("utf-8")
+        data = json.loads(body)
 
     timestamp = int(time.time())
 
