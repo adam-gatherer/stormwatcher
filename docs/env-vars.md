@@ -60,7 +60,7 @@ Each daily item will include:
 - temperature fields (`temp_min`, `temp_max`, `temp_mean`)
 - precipitation (`precip_prob_max`)
 - wind (`wind_speed_max`, `wind_gust_max`)
-- weather condition code (`weather_code`)
+- weather condition code (`weathercode`)
 - derived fields:
   - `wc_label`
   - `risk_score`
