@@ -9,6 +9,20 @@ import boto3
 
 from logic import build_db_item
 
+from decimal import Decimal
+
+
+def convert_floats(obj):
+    if isinstance(obj, float):
+        return Decimal(str(obj))
+    elif isinstance(obj, dict):
+        return {k: convert_floats(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_floats(v) for v in obj]
+    else:
+        return obj
+
+
 dynamodb = boto3.resource("dynamodb")
 s3 = boto3.client("s3")
 
@@ -51,10 +65,13 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         unix_ts = int(base_item["unix_timestamp"])
 
         item = {
-            "PK": location,     # e.g. "EDINBURGH"
-            "SK": unix_ts,      # sort key = unix timestamp
+            "PK": location,
+            "SK": unix_ts,
             **base_item,
         }
+
+        # convert floats → Decimal for DynamoDB
+        item = convert_floats(item)
 
         # write to table
         table.put_item(Item=item)
