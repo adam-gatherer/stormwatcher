@@ -7,7 +7,7 @@ from typing import Any, Dict, List
 
 import boto3
 
-from lambdas.transform_store.logic import build_db_item
+from logic import build_db_item
 
 dynamodb = boto3.resource("dynamodb")
 s3 = boto3.client("s3")
