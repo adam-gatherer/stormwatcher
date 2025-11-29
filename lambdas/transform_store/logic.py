@@ -57,7 +57,6 @@ def build_db_item(payload: Dict[str, Any]) -> Dict[str, Any]:
     data = payload
     daily_data = data["raw"]["daily"]
 
-
     # risk components
     rain_risk = daily_data["precipitation_probability_max"][0] / 100.0
 
@@ -75,12 +74,7 @@ def build_db_item(payload: Dict[str, Any]) -> Dict[str, Any]:
 
     wc_risk, wc_label = weathercode_risk_and_label(daily_data["weathercode"][0])
 
-    raw_score = (
-        0.4 * rain_risk +
-        0.3 * wind_risk +
-        0.2 * temp_risk +
-        0.1 * wc_risk
-    )
+    raw_score = 0.4 * rain_risk + 0.3 * wind_risk + 0.2 * temp_risk + 0.1 * wc_risk
 
     risk_score = min(raw_score, 1.0)
 
@@ -90,7 +84,6 @@ def build_db_item(payload: Dict[str, Any]) -> Dict[str, Any]:
         risk_level = "MEDIUM"
     else:
         risk_level = "HIGH"
-
 
     # build the output data
     db_item = {
@@ -112,7 +105,7 @@ def build_db_item(payload: Dict[str, Any]) -> Dict[str, Any]:
     return db_item
 
 
-#for running/testing locally
+# for running/testing locally
 if __name__ == "__main__":
     with open("weather.json", "r") as f:
         payload = json.load(f)

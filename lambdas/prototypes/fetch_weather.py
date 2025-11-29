@@ -23,7 +23,7 @@ def get_weather():
             "weathercode"
         ),
         "timezone": "GMT",
-        "forecast_days": 1
+        "forecast_days": 1,
     }
 
     response = requests.get(url, params=params)
@@ -37,8 +37,9 @@ def get_weather():
         "date": str(date.today()),
         "unix_timestamp": timestamp,
         "location": "Edinburgh",
-        "raw": data
+        "raw": data,
     }
+
 
 weather_data = get_weather()
 

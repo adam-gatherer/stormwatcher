@@ -31,14 +31,17 @@ def read_weather_json(filename="weather.json"):
 
     with open(filename, "r") as f:
         data = json.load(f)
-    
+
     daily_data = data["raw"]["daily"]
 
     rain_risk = daily_data["precipitation_probability_max"][0] / 100.0
 
     wind_risk = min(daily_data["wind_gusts_10m_max"][0] / 70.0, 1.0)
 
-    if daily_data["temperature_2m_min"][0] >= 0 and daily_data["temperature_2m_max"][0] <= 25:
+    if (
+        daily_data["temperature_2m_min"][0] >= 0
+        and daily_data["temperature_2m_max"][0] <= 25
+    ):
         temp_risk = 0.0
     elif daily_data["temperature_2m_min"][0] < 0:
         temp_risk = min((0 - daily_data["temperature_2m_min"][0]) / 10.0, 1.0)
@@ -47,13 +50,8 @@ def read_weather_json(filename="weather.json"):
 
     wc_risk, wc_label = weathercode_risk_and_label(daily_data["weathercode"][0])
 
-    raw_score = (
-        0.4 * rain_risk +
-        0.3 * wind_risk +
-        0.2 * temp_risk +
-        0.1 * wc_risk
-        )
-    
+    raw_score = 0.4 * rain_risk + 0.3 * wind_risk + 0.2 * temp_risk + 0.1 * wc_risk
+
     risk_score = min(raw_score, 1.0)
 
     if risk_score < 0.3:

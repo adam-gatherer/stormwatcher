@@ -76,5 +76,4 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         # write to table
         table.put_item(Item=item)
 
-
     return {"statusCode": 200}
