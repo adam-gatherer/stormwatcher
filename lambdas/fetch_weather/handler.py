@@ -38,7 +38,10 @@ def lambda_handler(event, context):
 
     # s3 bucket key
     date_str = payload["date"]
-    key = f"{raw_prefix}{date_str}-{location_name.lower()}.json"
+    unix_timestamp = payload["unix_timestamp"]
+    location_slug = location_name.lower().replace(" ", "-")
+
+    key = f"{raw_prefix}{date_str}-{unix_timestamp}-{location_slug}.json"
 
     s3.put_object(
         Bucket=raw_bucket,
