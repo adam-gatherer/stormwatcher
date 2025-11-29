@@ -2,6 +2,8 @@
 
 Stormwatch uses environment variables so the project can be redeployed to different environments without modifying code. Terraform will populate these values at deploy time, but the variables below document what each Lambda function expects and their typical values for the Edinburgh deployment.
 
+In AWS, these variables are assigned per-Lambda; the combined .env is only for local testing.
+
 ---
 
 ## Lambda #1 - fetch_weather
@@ -14,15 +16,15 @@ Stormwatch uses environment variables so the project can be redeployed to differ
 | `LOCATION_LAT` | Latitude of target location | `55.9486` *(Edinburgh Castle)* |
 | `LOCATION_LON` | Longitude of target location | `-3.1999` *(Edinburgh Castle)* |
 | `TIMEZONE` | Timezone string for API results | `Europe/London` |
-| `FORECAST_DAYS`      | Number of days of forecast to fetch | `1`
-| `LOCATION_NAME`      | Human-readable name for the location. This is written into the S3 payload as `location` and becomes the DynamoDB partition key (uppercased) in the transform Lambda. | `Edinburgh`                        |`
+| `FORECAST_DAYS`      | Number of days of forecast to fetch | `1` |
+| `LOCATION_NAME`      | Human-readable name for the location. This is written into the S3 payload as `location` and becomes the DynamoDB partition key (uppercased) in the transform Lambda. | `Edinburgh`                        |
 | `RAW_BUCKET_NAME` | S3 bucket for raw JSON drops | `stormwatch-raw-json-xyz` |
 | `RAW_BUCKET_PREFIX` | Prefix for stored JSON files | `raw/` |
 
 
 ### Notes
 - `LOCATION_LAT` and `LOCATION_LON` define the location the forecast is pulled for.
-- `RAW_BUCKET_PREFIX` defaults to `raw/` if not provided.
+- `RAW_BUCKET_PREFIX` defaults to `raw/` if not provided (as per code).
 - `FORECAST_DAYS=1` means “fetch just one day of forecast data”.
 
 
@@ -56,17 +58,21 @@ Stormwatch uses environment variables so the project can be redeployed to differ
 
 Each daily item will include:
 
+- `PK`
+- `SK`
 - `unix_timestamp`
 - `date`
 - `location`
-- temperature fields (`temp_min`, `temp_max`, `temp_mean`)
-- precipitation (`precip_prob_max`)
-- wind (`wind_speed_max`, `wind_gust_max`)
-- weather condition code (`weathercode`)
-- derived fields:
-  - `wc_label`
-  - `risk_score`
-  - `risk_level`
+- `temp_min`
+- `temp_max`
+- `temp_mean`
+- `precip_prob_max`
+- `wind_speed_max`
+- `wind_gust_max`
+- `weathercode`
+- `wc_label`
+- `risk_score`
+- `risk_level`
 
 ---
 
