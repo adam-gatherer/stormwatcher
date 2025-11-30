@@ -377,7 +377,7 @@ stormwatcher/
       main.tf
       outputs.tf
       providers.tf
-      s3_notifications.tf
+      s3.tf
       sns.tf
       terraform.tfvars
       variables.tf
