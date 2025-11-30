@@ -31,6 +31,28 @@ def weathercode_risk_and_label(code: int) -> Tuple[float, str]:
     return 0.0, "unknown"
 
 
+def validate_payload(payload: dict) -> None:
+    # top-level structure
+    for key in ("unix_timestamp", "date", "location", "raw"):
+        if key not in payload:
+            raise ValueError(f"Missing required key: {key}")
+
+    # validate weather data
+    daily = payload["raw"].get("daily", {})
+    required_daily = [
+        "temperature_2m_min",
+        "temperature_2m_max",
+        "temperature_2m_mean",
+        "precipitation_probability_max",
+        "wind_speed_10m_max",
+        "wind_gusts_10m_max",
+        "weathercode",
+    ]
+    for key in required_daily:
+        if key not in daily or not isinstance(daily[key], list) or not daily[key]:
+            raise ValueError(f"Invalid or empty daily field: {key}")
+        
+
 def build_db_item(payload: Dict[str, Any]) -> Dict[str, Any]:
     """
     Turn the combined payload (metadata + raw Open-Meteo JSON) into a
@@ -54,6 +76,9 @@ def build_db_item(payload: Dict[str, Any]) -> Dict[str, Any]:
         }
     }
     """
+    # validate payload
+    validate_payload(payload)
+    
     data = payload
     daily_data = data["raw"]["daily"]
 
