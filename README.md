@@ -403,7 +403,7 @@ stormwatcher/
 
 - Scheduled weather ingestion via EventBridge  
 - Raw JSON landing in S3 (`raw/` prefix)  
-- Automated transform + risk scoring Lambda  
+- Automated validation, transform + risk scoring Lambda  
 - DynamoDB time-series storage (PK = location, SK = Unix timestamp)  
 - Environment-driven configuration for all components  
 - Full Terraform IaC for infrastructure and wiring  
@@ -418,7 +418,6 @@ The project is now a self-contained, fully serverless batch/ETL-style workflow s
 
 Ideas for future iterations:
 
-- **Data validation** - Expand `transform_store` Lambda to conduct data validation before processing 
 - **Read API** - API Gateway + Lambda to query:
   - latest day for a location
   - last N days (e.g. 7-day history)
