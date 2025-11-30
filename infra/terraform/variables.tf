@@ -37,3 +37,9 @@ variable "forecast_days" {
   description = "Number of days to fetch weather forecast for"
   default     = "1"
 }
+
+variable "storm_threshold" {
+  type        = string
+  description = "Risk score threshold for 'storm incoming' notifications"
+  default     = "0.8"
+}
