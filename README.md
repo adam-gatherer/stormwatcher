@@ -410,8 +410,6 @@ stormwatcher/
 - SNS-based write-status notifications  
 - SNS-based storm alerts with configurable risk threshold  
 
-The project is now a self-contained, fully serverless batch/ETL-style workflow suitable as a portfolio piece for cloud, DevOps, or workload automation roles.
-
 ---
 
 ## Next Steps
