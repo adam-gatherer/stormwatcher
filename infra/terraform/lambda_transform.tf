@@ -46,8 +46,8 @@ resource "aws_iam_role_policy" "lambda_transform_store_s3_dynamo_sns" {
         Resource = aws_dynamodb_table.weatherrisk.arn
       },
       {
-        Effect   = "Allow"
-        Action   = ["sns:Publish"]
+        Effect = "Allow"
+        Action = ["sns:Publish"]
         Resource = [
           aws_sns_topic.status.arn,
           aws_sns_topic.storm.arn,

@@ -14,11 +14,11 @@ variable "location_name" {
 }
 
 variable "location_lat" {
-  type        = string
+  type = string
 }
 
 variable "location_lon" {
-  type        = string
+  type = string
 }
 
 variable "timezone" {
