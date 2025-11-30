@@ -51,7 +51,7 @@ def validate_payload(payload: dict) -> None:
     for key in required_daily:
         if key not in daily or not isinstance(daily[key], list) or not daily[key]:
             raise ValueError(f"Invalid or empty daily field: {key}")
-        
+
 
 def build_db_item(payload: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -78,7 +78,7 @@ def build_db_item(payload: Dict[str, Any]) -> Dict[str, Any]:
     """
     # validate payload
     validate_payload(payload)
-    
+
     data = payload
     daily_data = data["raw"]["daily"]
 

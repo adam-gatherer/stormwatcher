@@ -23,15 +23,19 @@ def convert_floats(obj):
         return obj
 
 
-def send_status_notification(success: bool, item: dict | None, error: Exception | None = None):
+def send_status_notification(
+    success: bool, item: dict | None, error: Exception | None = None
+):
     """Send a 'write successful/failure' notification to STATUS_TOPIC_ARN."""
-    # returns nothing to prevent faulty SNS attempt 
+    # returns nothing to prevent faulty SNS attempt
     if not STATUS_TOPIC_ARN:
         return
-    
+
     # build success message
     if success:
-        subject = f"Stormwatch write SUCCESS for {item.get('location')} {item.get('date')}"
+        subject = (
+            f"Stormwatch write SUCCESS for {item.get('location')} {item.get('date')}"
+        )
         message = {
             "status": "SUCCESS",
             "location": item.get("location"),
@@ -41,7 +45,7 @@ def send_status_notification(success: bool, item: dict | None, error: Exception 
             "pk": item.get("PK"),
             "sk": item.get("SK"),
         }
-    
+
     # build failure message
     else:
         subject = "Stormwatch write FAILURE"
@@ -60,12 +64,12 @@ def send_status_notification(success: bool, item: dict | None, error: Exception 
         Subject=subject,
         Message=json.dumps(message, default=str),
     )
-    
+
 
 def send_storm_notification(item: dict):
     """Send a 'storm incoming' notification to STORM_TOPIC_ARN if configured."""
 
-    # returns nothing to prevent faulty SNS attempt 
+    # returns nothing to prevent faulty SNS attempt
     if not STORM_TOPIC_ARN:
         return
 
@@ -99,6 +103,7 @@ sns = boto3.client("sns")
 STATUS_TOPIC_ARN = os.environ.get("STATUS_TOPIC_ARN")
 STORM_TOPIC_ARN = os.environ.get("STORM_TOPIC_ARN")
 STORM_THRESHOLD = float(os.environ.get("STORM_THRESHOLD", "0.8"))
+
 
 def get_table():
     table_name = os.environ["WEATHERRISK_TABLE_NAME"]
