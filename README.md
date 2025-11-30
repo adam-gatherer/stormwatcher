@@ -136,7 +136,7 @@ Each item also stores the derived risk metrics and weather attributes.
 - **S3 bucket**
   - Randomised name, e.g. `stormwatch-raw-json-xxxxxx`
   - Stores raw daily forecast data under `raw/`
-  - Lifecycle rules can be added to expire or transition old data
+  - Lifecycle rules added to expire old data
 
 - **DynamoDB table**
   - Randomised name, e.g. `stormwatch-risk-db-xxxxxx`
@@ -425,7 +425,6 @@ Ideas for future iterations:
 - **Frontend** - small static site (S3 + CloudFront) visualising:
   - today’s risk level
   - recent trend
-- **Lifecycle rules** - S3 lifecycle policies to expire old raw JSON and manage storage costs.
 - **CloudWatch alarms** - on Lambda error rates and throttling.
 - **DynamoDB Streams** - drive additional notification or archival workflows from change streams.
 
