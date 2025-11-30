@@ -28,8 +28,8 @@ resource "aws_iam_role_policy_attachment" "lambda_transform_store_basic" {
 }
 
 # policy
-resource "aws_iam_role_policy" "lambda_transform_store_s3_dynamo" {
-  name = "${var.project_name}-transform-store-s3-dynamo"
+resource "aws_iam_role_policy" "lambda_transform_store_s3_dynamo_sns" {
+  name = "${var.project_name}-transform-store-s3-dynamo-sns"
   role = aws_iam_role.lambda_transform_store.id
 
   policy = jsonencode({
@@ -44,10 +44,19 @@ resource "aws_iam_role_policy" "lambda_transform_store_s3_dynamo" {
         Effect   = "Allow"
         Action   = ["dynamodb:PutItem"]
         Resource = aws_dynamodb_table.weatherrisk.arn
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["sns:Publish"]
+        Resource = [
+          aws_sns_topic.status.arn,
+          aws_sns_topic.storm.arn,
+        ]
       }
     ]
   })
 }
+
 
 # create lambda function
 resource "aws_lambda_function" "transform_store" {
@@ -64,6 +73,9 @@ resource "aws_lambda_function" "transform_store" {
   environment {
     variables = {
       WEATHERRISK_TABLE_NAME = aws_dynamodb_table.weatherrisk.name
+      STATUS_TOPIC_ARN       = aws_sns_topic.status.arn
+      STORM_TOPIC_ARN        = aws_sns_topic.storm.arn
+      STORM_THRESHOLD        = var.storm_threshold
     }
   }
 
