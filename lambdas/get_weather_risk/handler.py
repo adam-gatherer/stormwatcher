@@ -21,3 +21,4 @@ def _get_query_params(event):
         days = 1
     return location, days
 
+### INCOMPLETE
